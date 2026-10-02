@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your Name: Personal Website</title>
+  <title>Suraj Maity</title>
   <style>
     body {
       font-family:'Lucida Console', monospace;
@@ -37,9 +37,74 @@
     .product-photo { display: block; max-width: 640px; width: 100%; margin: 0 auto; }
     .faqtable dt { margin-bottom: 0.75em; font-style: italic; }
     .faqtable dd { margin-left: 0; margin-bottom: 2em; }
+    #boot {
+      position: fixed; inset: 0; z-index: 10;
+      background: #000; color: #ccc;
+      font-size: 14px; line-height: 1.4;
+      padding: 16px; overflow: hidden; box-sizing: border-box;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      white-space: pre-wrap; cursor: pointer;
+      transition: opacity .4s;
+    }
+    #boot .ok { color: #3c3; } #boot .fail { color: #e33; } #boot .warn { color: #dc3; }
+    #boot .cursor { animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
   </style>
 </head>
 <body>
+  <script>
+    // boot screen: built in JS so the page still works without it
+    (function () {
+      var lines = [
+        '[    0.000000] Linux version 6.9.0-suraj (tinygrad@localhost) #1 SMP PREEMPT',
+        '[    0.004200] Command line: BOOT_IMAGE=/vmlinuz-suraj root=/dev/gpu0 lr=3e-4 seed=42',
+        '[    0.013370] tensor: detected 1 brain, 0 GPUs, borrowing Colab',
+        'ok Started Gradient Descent Service.',
+        'ok Reached local minimum. Reporting it as global.',
+        'ok Mounted /dev/gpu0.',
+        'fail Failed to allocate 2.00 MiB: CUDA out of memory (23.9 GiB reserved by PyTorch).',
+        'ok Loaded kernel module attention.ko (it is all you need).',
+        'ok Stacked more layers.',
+        'ok Dropped out 50% of neurons. They will be back at eval.',
+        'warn loss = nan. Lowering learning rate and pretending nothing happened.',
+        'ok Shuffled dataset with seed 42.',
+        'fail Failed to start Generalization. See overfitting.log for details.',
+        'ok Leaked test set into train set. Accuracy: 99.9%.',
+        'ok Vanishing gradients... vanished.',
+        'warn model.eval() not called. BatchNorm is judging you.',
+        'ok Tokenized "hello world" into 47 tokens.',
+        'ok Fixed shape mismatch by adding .unsqueeze(0) until it worked.',
+        'ok Started Hyperparameter Tuning (grad student descent).',
+        'ok Hallucinated 3 citations.',
+        'ok Reached target Artificial General Interface.',
+        '',
+        'suraj login: <span class="cursor">_</span>'
+      ];
+      var tags = { ok: '[<span class="ok">  OK  </span>] ', fail: '[<span class="fail">FAILED</span>] ', warn: '[<span class="warn"> WARN </span>] ' };
+      var boot = document.createElement('div');
+      boot.id = 'boot';
+      document.body.appendChild(boot);
+
+      var i = 0, timer;
+      function done() {
+        clearTimeout(timer);
+        removeEventListener('keydown', done);
+        boot.style.opacity = 0;
+        setTimeout(function () { boot.remove(); }, 400);
+      }
+      function next() {
+        if (i === lines.length) { timer = setTimeout(done, 900); return; }
+        var m = lines[i++].match(/^(ok|fail|warn) (.*)$/);
+        var row = document.createElement('div');
+        row.innerHTML = m ? tags[m[1]] + m[2] : lines[i - 1] || '&nbsp;';
+        boot.appendChild(row);
+        timer = setTimeout(next, 60 + Math.random() * 180);
+      }
+      boot.onclick = done;               // click or any key skips
+      addEventListener('keydown', done);
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) boot.remove(); else next();
+    })();
+  </script>
   <div class="landing">
     <div class="svg-container">
       <svg viewBox="0 0 130 50" xmlns="http://www.w3.org/2000/svg">
@@ -51,6 +116,7 @@
     <div class="links-container">
       <a href="#intro">home</a><span class="separator">|</span>
       <a href="#about">about me</a><span class="separator">|</span>
+      <a href="#experience">experience</a><span class="separator">|</span>
       <a href="#projects">projects</a><span class="separator">|</span>
       <a href="#contact">contact</a>
     </div>
@@ -58,24 +124,38 @@
 
   <hr>
   <h2 id="intro">welcome</h2>
-  <p>i am <strong>suraj</strong>, a 21 y/o cs undergrad with a keen interest in ml</p>
+  <p>i am <strong>suraj maity</strong>, a cs graduate from delhi, india with a keen interest in ml</p>
 
   <hr>
-  <h2 id="about">about Me</h2>
-  <p>attending uni in the day and tinkering at night. i love tech,art and music</p>
+  <h2 id="about">about me</h2>
+  <p>fresh out of a cs degree, training models by day and overfitting on hobbies by night. i love tech, art and music, and i'm usually found behind a camera or a jupyter notebook.</p>
 
   <hr>
-  <h2 id="projects">Projects</h2>
-  <p>Here are some of my recent projects:</p>
+  <h2 id="experience">experience</h2>
+  <p><strong>ai generalist intern, superkalam (yc23)</strong> | oct 2024 - dec 2024 | remote</p>
   <ul>
-    <li><a href="https://github.com/yourusername/project1">Project 1</a>: A brief description of what this project is about.</li>
-    <li><a href="https://github.com/yourusername/project2">Project 2</a>: A brief description of what this project is about.</li>
-    <li><a href="https://github.com/yourusername/project3">Project 3</a>: A brief description of what this project is about.</li>
+    <li>implemented ai tools and workflows to maximize student engagement.</li>
+    <li>planned how to use ai for content growth while cutting video lecture production time.</li>
+    <li>built in-house ai solutions to aid human teachers, including voice cloning and ai-generated presenters.</li>
+  </ul>
+  <p><strong>it intern, airports authority of india</strong> | sep 2024 - oct 2024 | new delhi</p>
+  <ul>
+    <li>integrated chatbots into the gem portal (government e-marketplace) to improve user experience.</li>
+    <li>worked with open-source llms and their implementation in production environments.</li>
+    <li>implemented vector databases for information retrieval and semantic search.</li>
+  </ul>
+
+  <hr>
+  <h2 id="projects">projects</h2>
+  <ul>
+    <li><a href="https://github.com/surajmaity/ML_projects/tree/main/smolgrad">smolgrad</a>: a minimalistic automatic differentiation library for gradient-based optimization of ml models. (python)</li>
+    <li><a href="https://github.com/surajmaity/ML_projects/tree/main/Style_transfer_app">style transfer app</a>: applies artistic styles to images with neural style transfer on convolutional neural networks. (python, deep learning)</li>
+    <li><a href="https://github.com/surajmaity/MAGIC-Gamma-Telescope-particle-classification-">magic gamma telescope particle classification</a>: classifies gamma-ray vs hadron particles on the magic gamma telescope dataset with 95% accuracy. (python, scikit-learn, pandas, matplotlib)</li>
   </ul>
 
   <hr>
   <h2 id="contact">contact</h2>
-  <p>feel free to reach out to me via <a href="https://x.com/surajmaity17"> twitter</a> or drop me a message on <a href="https://www.linkedin.com/in/suraj-maity-121a56213/">LinkedIn</a>.</p>
+  <p>feel free to mail me at <a href="mailto:surajmaity1313@gmail.com">surajmaity1313@gmail.com</a>, or reach out via <a href="https://x.com/surajmaity17">twitter</a>, <a href="https://www.linkedin.com/in/suraj-maity-121a56213/">linkedin</a> or <a href="https://github.com/surajmaity">github</a>.</p>
 
 </body>
 </html>
